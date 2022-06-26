@@ -1,6 +1,6 @@
 import express from "express";
-import { addUser } from "../controllers/users";
 import multer from "multer";
+import { addFile } from "../controllers/fileUpload";
 
 const router = express.Router();
 
@@ -18,7 +18,6 @@ const upload = multer({
   fileFilter: filefilter,
 });
 
-router.post("/add", upload.single("imageData"), addUser);
-router.post("/add", upload.single("imageData"), addUser);
+router.post("/add", upload.single("imageData"), addFile);
 
 module.exports = router;

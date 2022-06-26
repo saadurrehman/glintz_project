@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserById = exports.getUserById = exports.getAllUser = exports.addUser = void 0;
+exports.updateUser = exports.deleteUserById = exports.getUserById = exports.getAllUser = exports.addUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const addUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, age, experience } = req.body;
@@ -63,3 +63,18 @@ const deleteUserById = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.deleteUserById = deleteUserById;
+const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const user = yield User_1.default.destroy({
+            where: {
+                id,
+            },
+        });
+        res.status(200).json({ success: true, user });
+    }
+    catch (err) {
+        res.status(400).json({ success: false, err });
+    }
+});
+exports.updateUser = updateUser;

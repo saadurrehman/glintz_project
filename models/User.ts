@@ -9,6 +9,9 @@ const User = db.define(
     name: {
       type: STRING,
     },
+    profilePicture: {
+      type: STRING,
+    },
     age: {
       type: INTEGER,
     },

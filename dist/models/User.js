@@ -10,6 +10,9 @@ const User = connection_1.default.define("users", {
     name: {
         type: sequelize_1.STRING,
     },
+    profilePicture: {
+        type: sequelize_1.STRING,
+    },
     age: {
         type: sequelize_1.INTEGER,
     },

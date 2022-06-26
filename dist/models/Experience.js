@@ -9,11 +9,18 @@ const Experience = connection_1.default.define("experience", {
     companyName: {
         type: sequelize_1.STRING,
     },
+    companyLogo: {
+        // URL
+        type: sequelize_1.STRING,
+    },
     user_id: {
         type: sequelize_1.INTEGER,
     },
     description: {
         type: sequelize_1.TEXT,
+    },
+    jobTitle: {
+        type: sequelize_1.STRING,
     },
     isCurrentlyWorkingHere: {
         type: sequelize_1.BOOLEAN,

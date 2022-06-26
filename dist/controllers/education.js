@@ -12,18 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addExperience = void 0;
-const Experience_1 = __importDefault(require("../models/Experience"));
-const addExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { startDate, endDate, companyName, user_id, description, isCurrentlyWorkingHere, } = req.body;
+exports.addEducation = void 0;
+const Education_1 = __importDefault(require("../models/Education"));
+const addEducation = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { startDate, endDate, instituteName, user_id } = req.body;
     try {
-        const added = yield Experience_1.default.create({
+        const added = yield Education_1.default.create({
             startDate,
             endDate,
-            companyName,
+            instituteName,
             user_id,
-            description,
-            isCurrentlyWorkingHere,
         });
         res.status(200).json({ success: true, added });
     }
@@ -32,4 +30,4 @@ const addExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         res.status(400).json({ success: false, err });
     }
 });
-exports.addExperience = addExperience;
+exports.addEducation = addEducation;

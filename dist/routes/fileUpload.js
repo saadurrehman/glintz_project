@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const users_1 = require("../controllers/users");
 const multer_1 = __importDefault(require("multer"));
+const fileUpload_1 = require("../controllers/fileUpload");
 const router = express_1.default.Router();
 const filefilter = (req, file, cb) => {
     if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
@@ -21,5 +21,5 @@ const upload = (0, multer_1.default)({
     },
     fileFilter: filefilter,
 });
-router.post("/add", upload.single("imageData"), users_1.addUser);
+router.post("/add", upload.single("imageData"), fileUpload_1.addFile);
 module.exports = router;

@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 const { addExperience } = require("../controllers/experience");
 
 const router = express.Router();

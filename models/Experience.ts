@@ -8,11 +8,18 @@ const Experience = db.define(
     companyName: {
       type: STRING,
     },
+    companyLogo: {
+      // URL
+      type: STRING,
+    },
     user_id: {
       type: INTEGER,
     },
     description: {
       type: TEXT,
+    },
+    jobTitle: {
+      type: STRING,
     },
     isCurrentlyWorkingHere: {
       type: BOOLEAN,

@@ -15,7 +15,6 @@ export const addExperience = async (
     isCurrentlyWorkingHere,
   } = req.body;
 
-  console.log(req.body);
   try {
     const added = await Experience.create({
       startDate,
