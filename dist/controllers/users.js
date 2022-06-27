@@ -12,12 +12,42 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUser = exports.deleteUserById = exports.getUserById = exports.getAllUser = exports.addUser = void 0;
+exports.updateUser = exports.deleteUserById = exports.getUserById = exports.getAllUser = exports.addUser = exports.addFile = void 0;
 const User_1 = __importDefault(require("../models/User"));
+const firebase_1 = require("../firebase");
+const storage_1 = require("firebase/storage");
+const addFile = (file) => __awaiter(void 0, void 0, void 0, function* () {
+    if (file) {
+        const storageRef = (0, storage_1.ref)(firebase_1.storage, `files/${file.originalname}`);
+        const uploadTask = (0, storage_1.uploadBytesResumable)(storageRef, file.buffer);
+        return new Promise((resolve, reject) => {
+            uploadTask.on("state_changed", (snapshot) => {
+                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            }, (error) => {
+                console.error(error);
+                reject(error);
+            }, () => {
+                (0, storage_1.getDownloadURL)(uploadTask.snapshot.ref).then((downloadURL) => {
+                    resolve(downloadURL);
+                });
+            });
+        });
+    }
+});
+exports.addFile = addFile;
 const addUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, age, experience } = req.body;
     try {
-        const added = yield User_1.default.create({ name, age, experience });
+        let profileUrl = null;
+        if (req.file) {
+            profileUrl = yield (0, exports.addFile)(req.file);
+        }
+        const added = yield User_1.default.create({
+            name,
+            age,
+            experience,
+            profilePicture: profileUrl ? profileUrl : "",
+        });
         res.status(200).json({ success: true, added });
     }
     catch (err) {
@@ -65,8 +95,12 @@ const deleteUserById = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 exports.deleteUserById = deleteUserById;
 const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    let profileUrl = null;
+    if (req.file) {
+        profileUrl = yield (0, exports.addFile)(req.file);
+    }
     try {
-        const user = yield User_1.default.destroy({
+        const user = yield User_1.default.update(profileUrl ? Object.assign(Object.assign({}, req.body), { profilePicture: profileUrl }) : req.body, {
             where: {
                 id,
             },

@@ -1,6 +1,36 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/User";
+import { storage } from "../firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
+export const addFile = async (
+  file: Express.Multer.File
+): Promise<string | Error | undefined> => {
+  if (file) {
+    const storageRef = ref(storage, `files/${file.originalname}`);
+    const uploadTask = uploadBytesResumable(storageRef, file.buffer);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+        },
+        (error) => {
+          console.error(error);
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  }
+};
 export const addUser = async (
   req: Request,
   res: Response,
@@ -9,7 +39,17 @@ export const addUser = async (
   const { name, age, experience } = req.body;
 
   try {
-    const added = await User.create({ name, age, experience });
+    let profileUrl = null;
+    if (req.file) {
+      profileUrl = await addFile(req.file);
+    }
+
+    const added = await User.create({
+      name,
+      age,
+      experience,
+      profilePicture: profileUrl ? profileUrl : "",
+    });
     res.status(200).json({ success: true, added });
   } catch (err) {
     console.error(err);
@@ -74,12 +114,20 @@ export const updateUser = async (
 ) => {
   const { id } = req.params;
 
+  let profileUrl = null;
+  if (req.file) {
+    profileUrl = await addFile(req.file);
+  }
+
   try {
-    const user = await User.destroy({
-      where: {
-        id,
-      },
-    });
+    const user = await User.update(
+      profileUrl ? { ...req.body, profilePicture: profileUrl } : req.body,
+      {
+        where: {
+          id,
+        },
+      }
+    );
 
     res.status(200).json({ success: true, user });
   } catch (err) {

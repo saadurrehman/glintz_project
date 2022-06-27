@@ -15,11 +15,12 @@ const filefilter = (req, file, cb) => {
         cb(null, false);
 };
 const upload = (0, multer_1.default)({
-    //   storage: storage,
     limits: {
         fileSize: 1024 * 1024 * 5,
     },
     fileFilter: filefilter,
 });
+router.get("/:id", users_1.getUserById);
 router.post("/add", upload.single("imageData"), users_1.addUser);
+router.patch("/update/:id", upload.single("imageData"), users_1.updateUser);
 module.exports = router;

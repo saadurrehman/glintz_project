@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser } from "../controllers/users";
+import { addUser, getUserById, updateUser } from "../controllers/users";
 import multer from "multer";
 
 const router = express.Router();
@@ -11,14 +11,14 @@ const filefilter = (req: any, file: any, cb: any) => {
 };
 
 const upload = multer({
-  //   storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 5,
   },
   fileFilter: filefilter,
 });
 
+router.get("/:id", getUserById);
 router.post("/add", upload.single("imageData"), addUser);
-router.post("/add", upload.single("imageData"), addUser);
+router.patch("/update/:id", upload.single("imageData"), updateUser);
 
 module.exports = router;
