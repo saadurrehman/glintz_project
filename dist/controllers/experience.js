@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addExperience = void 0;
+exports.updateExperience = exports.addExperience = void 0;
 const Experience_1 = __importDefault(require("../models/Experience"));
 const addExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { startDate, endDate, companyName, user_id, description, isCurrentlyWorkingHere, } = req.body;
@@ -33,3 +33,19 @@ const addExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.addExperience = addExperience;
+const updateExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const updated = yield Experience_1.default.update(Object.assign({}, req.body), {
+            where: {
+                id,
+            },
+        });
+        res.status(200).json({ success: true, added: updated });
+    }
+    catch (err) {
+        console.error(err);
+        res.status(400).json({ success: false, err });
+    }
+});
+exports.updateExperience = updateExperience;

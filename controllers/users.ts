@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import User from "../models/User";
+import Experience from "../models/Experience";
 import { storage } from "../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
@@ -80,7 +81,14 @@ export const getUserById = async (
   const { id } = req.params;
 
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, {
+      include: [
+        {
+          model: Experience,
+        },
+      ],
+    });
+
     res.status(200).json({ success: true, user });
   } catch (err) {
     res.status(400).json({ success: false, err });

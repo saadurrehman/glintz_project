@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUser = exports.deleteUserById = exports.getUserById = exports.getAllUser = exports.addUser = exports.addFile = void 0;
 const User_1 = __importDefault(require("../models/User"));
+const Experience_1 = __importDefault(require("../models/Experience"));
 const firebase_1 = require("../firebase");
 const storage_1 = require("firebase/storage");
 const addFile = (file) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,7 +71,13 @@ exports.getAllUser = getAllUser;
 const getUserById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const user = yield User_1.default.findByPk(id);
+        const user = yield User_1.default.findByPk(id, {
+            include: [
+                {
+                    model: Experience_1.default,
+                },
+            ],
+        });
         res.status(200).json({ success: true, user });
     }
     catch (err) {
