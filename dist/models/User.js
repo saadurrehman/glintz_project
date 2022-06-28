@@ -12,12 +12,16 @@ const User = connection_1.default.define("users", {
     },
     profilePicture: {
         type: sequelize_1.STRING,
+        allowNull: true,
     },
     age: {
         type: sequelize_1.INTEGER,
     },
     experience: {
         type: sequelize_1.INTEGER,
+    },
+    description: {
+        type: sequelize_1.STRING,
     },
 }, {
     // disable the modification of table names; By default, sequelize will automatically

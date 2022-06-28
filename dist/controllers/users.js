@@ -107,10 +107,17 @@ const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         profileUrl = yield (0, exports.addFile)(req.file);
     }
     try {
-        const user = yield User_1.default.update(profileUrl ? Object.assign(Object.assign({}, req.body), { profilePicture: profileUrl }) : req.body, {
+        yield User_1.default.update(profileUrl ? Object.assign(Object.assign({}, req.body), { profilePicture: profileUrl }) : req.body, {
             where: {
                 id,
             },
+        });
+        const user = yield User_1.default.findByPk(id, {
+            include: [
+                {
+                    model: Experience_1.default,
+                },
+            ],
         });
         res.status(200).json({ success: true, user });
     }

@@ -128,7 +128,7 @@ export const updateUser = async (
   }
 
   try {
-    const user = await User.update(
+    await User.update(
       profileUrl ? { ...req.body, profilePicture: profileUrl } : req.body,
       {
         where: {
@@ -136,6 +136,14 @@ export const updateUser = async (
         },
       }
     );
+
+    const user = await User.findByPk(id, {
+      include: [
+        {
+          model: Experience,
+        },
+      ],
+    });
 
     res.status(200).json({ success: true, user });
   } catch (err) {

@@ -1,7 +1,8 @@
 import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
-import { Sequelize, Model, ModelCtor } from "sequelize/types";
+import { Sequelize, Model } from "sequelize/types";
 import User from "./models/User";
+import cors from "cors";
 
 import db from "./connection";
 
@@ -24,6 +25,7 @@ app.use(
     extended: false,
   })
 );
+app.use(cors());
 
 app.use("/v1/user", require("./routes/user"));
 app.use("/v1/experience", require("./routes/experience"));

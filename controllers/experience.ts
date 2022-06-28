@@ -38,14 +38,18 @@ export const updateExperience = async (
 ) => {
   const { id } = req.params;
   try {
-    const updated = await Experience.update(
-      { ...req.body },
-      {
-        where: {
-          id,
-        },
-      }
-    );
+    const updated = Experience.bulkCreate([...req.body.data], {
+      updateOnDuplicate: ["name"],
+    });
+
+    // const updated = await Experience.update(
+    //   { ...req.body },
+    //   {
+    //     where: {
+    //       id,
+    //     },
+    //   }
+    // );
 
     res.status(200).json({ success: true, added: updated });
   } catch (err) {

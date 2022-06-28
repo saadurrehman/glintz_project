@@ -36,11 +36,17 @@ exports.addExperience = addExperience;
 const updateExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const updated = yield Experience_1.default.update(Object.assign({}, req.body), {
-            where: {
-                id,
-            },
+        const updated = Experience_1.default.bulkCreate([...req.body.data], {
+            updateOnDuplicate: ["name"],
         });
+        // const updated = await Experience.update(
+        //   { ...req.body },
+        //   {
+        //     where: {
+        //       id,
+        //     },
+        //   }
+        // );
         res.status(200).json({ success: true, added: updated });
     }
     catch (err) {

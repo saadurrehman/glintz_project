@@ -11,12 +11,16 @@ const User = db.define(
     },
     profilePicture: {
       type: STRING,
+      allowNull: true,
     },
     age: {
       type: INTEGER,
     },
     experience: {
       type: INTEGER,
+    },
+    description: {
+      type: STRING,
     },
   },
   {
