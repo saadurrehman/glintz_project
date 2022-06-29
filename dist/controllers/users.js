@@ -17,9 +17,9 @@ const User_1 = __importDefault(require("../models/User"));
 const Experience_1 = __importDefault(require("../models/Experience"));
 const firebase_1 = require("../firebase");
 const storage_1 = require("firebase/storage");
-const addFile = (file) => __awaiter(void 0, void 0, void 0, function* () {
+const addFile = (file, folder) => __awaiter(void 0, void 0, void 0, function* () {
     if (file) {
-        const storageRef = (0, storage_1.ref)(firebase_1.storage, `files/${file.originalname}`);
+        const storageRef = (0, storage_1.ref)(firebase_1.storage, `${folder}/${file.originalname}`);
         const uploadTask = (0, storage_1.uploadBytesResumable)(storageRef, file.buffer);
         return new Promise((resolve, reject) => {
             uploadTask.on("state_changed", (snapshot) => {
@@ -41,7 +41,7 @@ const addUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     try {
         let profileUrl = null;
         if (req.file) {
-            profileUrl = yield (0, exports.addFile)(req.file);
+            profileUrl = yield (0, exports.addFile)(req.file, "files");
         }
         const added = yield User_1.default.create({
             name,
@@ -104,7 +104,7 @@ const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     const { id } = req.params;
     let profileUrl = null;
     if (req.file) {
-        profileUrl = yield (0, exports.addFile)(req.file);
+        profileUrl = yield (0, exports.addFile)(req.file, "files");
     }
     try {
         yield User_1.default.update(profileUrl ? Object.assign(Object.assign({}, req.body), { profilePicture: profileUrl }) : req.body, {

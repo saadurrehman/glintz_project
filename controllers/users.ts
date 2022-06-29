@@ -5,10 +5,11 @@ import { storage } from "../firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 export const addFile = async (
-  file: Express.Multer.File
+  file: Express.Multer.File,
+  folder: string
 ): Promise<string | Error | undefined> => {
   if (file) {
-    const storageRef = ref(storage, `files/${file.originalname}`);
+    const storageRef = ref(storage, `${folder}/${file.originalname}`);
     const uploadTask = uploadBytesResumable(storageRef, file.buffer);
 
     return new Promise((resolve, reject) => {
@@ -42,7 +43,7 @@ export const addUser = async (
   try {
     let profileUrl = null;
     if (req.file) {
-      profileUrl = await addFile(req.file);
+      profileUrl = await addFile(req.file, "files");
     }
 
     const added = await User.create({
@@ -124,7 +125,7 @@ export const updateUser = async (
 
   let profileUrl = null;
   if (req.file) {
-    profileUrl = await addFile(req.file);
+    profileUrl = await addFile(req.file, "files");
   }
 
   try {

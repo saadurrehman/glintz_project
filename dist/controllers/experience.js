@@ -12,20 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateExperience = exports.addExperience = void 0;
+exports.deleteExperienceById = exports.updateExperience = exports.addExperience = void 0;
 const Experience_1 = __importDefault(require("../models/Experience"));
+const users_1 = require("./users");
 const addExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { startDate, endDate, companyName, user_id, description, isCurrentlyWorkingHere, } = req.body;
     try {
-        const added = yield Experience_1.default.create({
-            startDate,
-            endDate,
-            companyName,
-            user_id,
-            description,
-            isCurrentlyWorkingHere,
-        });
-        res.status(200).json({ success: true, added });
+        let profileUrl = null;
+        if (req.file) {
+            profileUrl = yield (0, users_1.addFile)(req.file, "files");
+        }
+        const experience = yield Experience_1.default.create(Object.assign(Object.assign({}, req.body), { companyLogo: profileUrl ? profileUrl : "" }));
+        res.status(200).json({ success: true, experience });
     }
     catch (err) {
         console.error(err);
@@ -33,21 +30,26 @@ const addExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.addExperience = addExperience;
-const updateExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const updateExperience = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    const { user_id } = req.body;
     try {
-        const updated = Experience_1.default.bulkCreate([...req.body.data], {
-            updateOnDuplicate: ["name"],
+        let profileUrl = null;
+        if (req.file) {
+            profileUrl = yield (0, users_1.addFile)(req.file, "experience");
+        }
+        console.log("HEllo", req.body);
+        yield Experience_1.default.update(profileUrl ? Object.assign(Object.assign({}, req.body), { companyLogo: profileUrl }) : req.body, {
+            where: {
+                id,
+            },
         });
-        // const updated = await Experience.update(
-        //   { ...req.body },
-        //   {
-        //     where: {
-        //       id,
-        //     },
-        //   }
-        // );
-        res.status(200).json({ success: true, added: updated });
+        const experiences = yield Experience_1.default.findAll({
+            where: {
+                user_id,
+            },
+        });
+        res.status(200).json({ success: true, experiences });
     }
     catch (err) {
         console.error(err);
@@ -55,3 +57,18 @@ const updateExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.updateExperience = updateExperience;
+const deleteExperienceById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const experience = yield Experience_1.default.destroy({
+            where: {
+                id,
+            },
+        });
+        res.status(200).json({ success: true, experience });
+    }
+    catch (err) {
+        res.status(400).json({ success: false, err });
+    }
+});
+exports.deleteExperienceById = deleteExperienceById;
