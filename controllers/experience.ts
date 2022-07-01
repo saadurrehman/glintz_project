@@ -11,7 +11,7 @@ export const addExperience = async (
   try {
     let profileUrl = null;
     if (req.file) {
-      profileUrl = await addFile(req.file, "files");
+      profileUrl = await addFile(req.file, "experience");
     }
 
     const experience = await Experience.create({
@@ -35,8 +35,6 @@ export const updateExperience = async (req: Request, res: Response) => {
     if (req.file) {
       profileUrl = await addFile(req.file, "experience");
     }
-
-    console.log("HEllo", req.body);
 
     await Experience.update(
       profileUrl ? { ...req.body, companyLogo: profileUrl } : req.body,

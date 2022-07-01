@@ -19,7 +19,7 @@ const addExperience = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     try {
         let profileUrl = null;
         if (req.file) {
-            profileUrl = yield (0, users_1.addFile)(req.file, "files");
+            profileUrl = yield (0, users_1.addFile)(req.file, "experience");
         }
         const experience = yield Experience_1.default.create(Object.assign(Object.assign({}, req.body), { companyLogo: profileUrl ? profileUrl : "" }));
         res.status(200).json({ success: true, experience });
@@ -38,7 +38,6 @@ const updateExperience = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (req.file) {
             profileUrl = yield (0, users_1.addFile)(req.file, "experience");
         }
-        console.log("HEllo", req.body);
         yield Experience_1.default.update(profileUrl ? Object.assign(Object.assign({}, req.body), { companyLogo: profileUrl }) : req.body, {
             where: {
                 id,
