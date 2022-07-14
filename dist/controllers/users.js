@@ -17,10 +17,18 @@ const User_1 = __importDefault(require("../models/User"));
 const Experience_1 = __importDefault(require("../models/Experience"));
 const firebase_1 = require("../firebase");
 const storage_1 = require("firebase/storage");
-const addFile = (file, folder) => __awaiter(void 0, void 0, void 0, function* () {
+const addFile = (file, folder, extension) => __awaiter(void 0, void 0, void 0, function* () {
     if (file) {
-        const storageRef = (0, storage_1.ref)(firebase_1.storage, `${folder}/${file.originalname}`);
-        const uploadTask = (0, storage_1.uploadBytesResumable)(storageRef, file.buffer);
+        let storageRef;
+        let uploadTask;
+        if (typeof file === "string") {
+            storageRef = (0, storage_1.ref)(firebase_1.storage, `${folder}/${new Date().getMilliseconds().toString()}.${extension}`);
+            uploadTask = (0, storage_1.uploadBytesResumable)(storageRef, new Buffer(file));
+        }
+        else {
+            storageRef = (0, storage_1.ref)(firebase_1.storage, `${folder}/${file.originalname}`);
+            uploadTask = (0, storage_1.uploadBytesResumable)(storageRef, file.buffer);
+        }
         return new Promise((resolve, reject) => {
             uploadTask.on("state_changed", (snapshot) => {
                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);

@@ -38,7 +38,12 @@ const updateExperience = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (req.file) {
             profileUrl = yield (0, users_1.addFile)(req.file, "experience");
         }
-        yield Experience_1.default.update(profileUrl ? Object.assign(Object.assign({}, req.body), { companyLogo: profileUrl }) : req.body, {
+        let isCurrentlyWorkingHere = req.body.isCurrentlyWorkingHere;
+        if (typeof req.body.isCurrentlyWorkingHere === "string") {
+            isCurrentlyWorkingHere = JSON.parse(req.body.isCurrentlyWorkingHere);
+        }
+        yield Experience_1.default.update(profileUrl
+            ? Object.assign(Object.assign({}, req.body), { isCurrentlyWorkingHere, companyLogo: profileUrl }) : req.body, {
             where: {
                 id,
             },

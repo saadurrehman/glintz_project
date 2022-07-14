@@ -2,15 +2,33 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/User";
 import Experience from "../models/Experience";
 import { storage } from "../firebase";
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import {
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+  UploadTask,
+} from "firebase/storage";
+import fs from "fs";
 
 export const addFile = async (
-  file: Express.Multer.File,
-  folder: string
+  file: Express.Multer.File | string,
+  folder: string,
+  extension?: string
 ): Promise<string | Error | undefined> => {
   if (file) {
-    const storageRef = ref(storage, `${folder}/${file.originalname}`);
-    const uploadTask = uploadBytesResumable(storageRef, file.buffer);
+    let storageRef;
+    let uploadTask: UploadTask;
+
+    if (typeof file === "string") {
+      storageRef = ref(
+        storage,
+        `${folder}/${new Date().getMilliseconds().toString()}.${extension}`
+      );
+      uploadTask = uploadBytesResumable(storageRef, new Buffer(file));
+    } else {
+      storageRef = ref(storage, `${folder}/${file.originalname}`);
+      uploadTask = uploadBytesResumable(storageRef, file.buffer);
+    }
 
     return new Promise((resolve, reject) => {
       uploadTask.on(
@@ -124,6 +142,7 @@ export const updateUser = async (
   const { id } = req.params;
 
   let profileUrl = null;
+
   if (req.file) {
     profileUrl = await addFile(req.file, "files");
   }

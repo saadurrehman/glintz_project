@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import Experience from "../models/Experience";
-import User from "../models/User";
 import { addFile } from "./users";
 
 export const addExperience = async (
@@ -36,8 +35,16 @@ export const updateExperience = async (req: Request, res: Response) => {
       profileUrl = await addFile(req.file, "experience");
     }
 
+    let isCurrentlyWorkingHere = req.body.isCurrentlyWorkingHere;
+
+    if (typeof req.body.isCurrentlyWorkingHere === "string") {
+      isCurrentlyWorkingHere = JSON.parse(req.body.isCurrentlyWorkingHere);
+    }
+
     await Experience.update(
-      profileUrl ? { ...req.body, companyLogo: profileUrl } : req.body,
+      profileUrl
+        ? { ...req.body, isCurrentlyWorkingHere, companyLogo: profileUrl }
+        : req.body,
       {
         where: {
           id,
