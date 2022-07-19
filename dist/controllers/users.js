@@ -45,7 +45,7 @@ const addFile = (file, folder, extension) => __awaiter(void 0, void 0, void 0, f
 });
 exports.addFile = addFile;
 const addUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, age, experience } = req.body;
+    const { name, age, experience, description } = req.body;
     try {
         let profileUrl = null;
         if (req.file) {
@@ -55,6 +55,7 @@ const addUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
             name,
             age,
             experience,
+            description,
             profilePicture: profileUrl ? profileUrl : "",
         });
         res.status(200).json({ success: true, added });
@@ -78,6 +79,7 @@ const getAllUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 exports.getAllUser = getAllUser;
 const getUserById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    console.log(id);
     try {
         const user = yield User_1.default.findByPk(id, {
             include: [

@@ -1,7 +1,5 @@
 import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
-import { Sequelize, Model } from "sequelize/types";
-import User from "./models/User";
 import cors from "cors";
 
 import db from "./connection";

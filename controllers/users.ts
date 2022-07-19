@@ -56,7 +56,7 @@ export const addUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, age, experience } = req.body;
+  const { name, age, experience, description } = req.body;
 
   try {
     let profileUrl = null;
@@ -68,6 +68,7 @@ export const addUser = async (
       name,
       age,
       experience,
+      description,
       profilePicture: profileUrl ? profileUrl : "",
     });
     res.status(200).json({ success: true, added });
@@ -98,7 +99,7 @@ export const getUserById = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-
+  console.log(id);
   try {
     const user = await User.findByPk(id, {
       include: [

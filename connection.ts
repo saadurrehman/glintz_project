@@ -3,23 +3,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default new Sequelize(
-  process.env.DB_NAME!,
-  process.env.DB_USERNAME!,
-  process.env.DB_PASSWORD!,
+  "heroku_254bee4a05f9d78",
+  "b3fad8e0bff819",
+  "22d1ddee",
   {
-    host: "localhost",
-    dialect: "postgres",
-    port: +process.env.DB_PORT!,
+    host: "us-cdbr-east-06.cleardb.net",
+    dialect: "mysql",
   }
 );
-
-//server connection
-// const sequelize = new Sequelize(
-//   "heroku_f0106001a89edd5",
-//   "bfeaafb8a11fa5",
-//   "e90c830c",
-//   {
-//     host: "us-cdbr-east-05.cleardb.net",
-//     dialect: "mysql",
-//   }
-// );
