@@ -23,14 +23,14 @@ app.use(express_1.default.urlencoded({
     extended: false,
 }));
 app.use((0, cors_1.default)());
+app.use("/v1/user", require("./routes/user"));
+app.use("/v1/experience", require("./routes/experience"));
+app.use("/v1/fileUpload", require("./routes/fileUpload"));
 if (process.env.NODE_ENV === "production") {
     app.use(express_1.default.static(path_1.default.join(__dirname, "client", "build")));
     app.get("*", (req, resp) => {
         resp.sendFile(path_1.default.join(__dirname, "client", "build", "index.html"));
     });
 }
-app.use("/v1/user", require("./routes/user"));
-app.use("/v1/experience", require("./routes/experience"));
-app.use("/v1/fileUpload", require("./routes/fileUpload"));
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));

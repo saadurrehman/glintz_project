@@ -25,16 +25,16 @@ app.use(
 );
 app.use(cors());
 
+app.use("/v1/user", require("./routes/user"));
+app.use("/v1/experience", require("./routes/experience"));
+app.use("/v1/fileUpload", require("./routes/fileUpload"));
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client", "build")));
   app.get("*", (req, resp) => {
     resp.sendFile(path.join(__dirname, "client", "build", "index.html"));
   });
 }
-
-app.use("/v1/user", require("./routes/user"));
-app.use("/v1/experience", require("./routes/experience"));
-app.use("/v1/fileUpload", require("./routes/fileUpload"));
 
 const PORT = process.env.PORT || 8000;
 
