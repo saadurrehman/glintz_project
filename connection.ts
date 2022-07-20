@@ -2,12 +2,9 @@ import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 dotenv.config();
 
-export default new Sequelize(
-  "heroku_254bee4a05f9d78",
-  "b3fad8e0bff819",
-  "22d1ddee",
-  {
-    host: "us-cdbr-east-06.cleardb.net",
-    dialect: "mysql",
-  }
-);
+const { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST } = process.env;
+
+export default new Sequelize(DB_NAME!, DB_USERNAME!, DB_PASSWORD!, {
+  host: DB_HOST,
+  dialect: "mysql",
+});

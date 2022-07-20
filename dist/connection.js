@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-exports.default = new sequelize_1.Sequelize("heroku_254bee4a05f9d78", "b3fad8e0bff819", "22d1ddee", {
-    host: "us-cdbr-east-06.cleardb.net",
+const { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST } = process.env;
+exports.default = new sequelize_1.Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
+    host: DB_HOST,
     dialect: "mysql",
 });

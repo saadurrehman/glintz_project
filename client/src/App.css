@@ -1,0 +1,29 @@
+.candidate-education-content{
+  position: relative;
+}
+
+.candidate-education-content::before{
+  content: "";
+    position: absolute;
+    border: 1px dashed rgba(118,109,244,.4);
+    height: 98px;
+    left: 16px;
+    top: 44px;
+}
+
+.bg-soft-primary {
+  background-color: rgba(118,109,244,.15)!important;
+  color: #766df4!important;
+}
+
+.candidate-education-content .circle {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 40px;
+}
+
+small{
+  color:red
+}

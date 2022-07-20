@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-
+import path from "path";
 import db from "./connection";
 
 dotenv.config();
@@ -24,6 +24,13 @@ app.use(
   })
 );
 app.use(cors());
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client", "build")));
+  app.get("*", (req, resp) => {
+    resp.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.use("/v1/user", require("./routes/user"));
 app.use("/v1/experience", require("./routes/experience"));

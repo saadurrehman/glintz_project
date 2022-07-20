@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
 const connection_1 = __importDefault(require("./connection"));
 dotenv_1.default.config();
 connection_1.default.authenticate()
@@ -22,6 +23,12 @@ app.use(express_1.default.urlencoded({
     extended: false,
 }));
 app.use((0, cors_1.default)());
+if (process.env.NODE_ENV === "production") {
+    app.use(express_1.default.static(path_1.default.join(__dirname, "client", "build")));
+    app.get("*", (req, resp) => {
+        resp.sendFile(path_1.default.join(__dirname, "client", "build", "index.html"));
+    });
+}
 app.use("/v1/user", require("./routes/user"));
 app.use("/v1/experience", require("./routes/experience"));
 app.use("/v1/fileUpload", require("./routes/fileUpload"));
