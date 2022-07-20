@@ -29,6 +29,7 @@ app.use("/v1/user", require("./routes/user"));
 app.use("/v1/experience", require("./routes/experience"));
 app.use("/v1/fileUpload", require("./routes/fileUpload"));
 
+console.log("__dirname:::::::::::::;", __dirname);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client", "build")));
   app.get("*", (req, resp) => {
