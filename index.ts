@@ -31,9 +31,9 @@ app.use("/v1/fileUpload", require("./routes/fileUpload"));
 
 console.log("__dirname:::::::::::::;", __dirname);
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client", "build")));
+  app.use(express.static(path.join("client", "build")));
   app.get("*", (req, resp) => {
-    resp.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    resp.sendFile(path.join("client", "build", "index.html"));
   });
 }
 
