@@ -79,7 +79,6 @@ const getAllUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 exports.getAllUser = getAllUser;
 const getUserById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    console.log(id);
     try {
         const user = yield User_1.default.findByPk(id, {
             include: [

@@ -143,6 +143,7 @@ const ExperienceEditModal = ({
                   End Date
                 </Form.Label>
                 <DatePicker
+                  disabled={values.isCurrentlyWorkingHere}
                   selected={values.endDate}
                   onChange={(date: Date) => setFieldValue("endDate", date)}
                 />

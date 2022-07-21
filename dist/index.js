@@ -26,7 +26,6 @@ app.use((0, cors_1.default)());
 app.use("/v1/user", require("./routes/user"));
 app.use("/v1/experience", require("./routes/experience"));
 app.use("/v1/fileUpload", require("./routes/fileUpload"));
-console.log("__dirname:::::::::::::;", __dirname);
 if (process.env.NODE_ENV === "production") {
     app.use(express_1.default.static(path_1.default.join("client", "build")));
     app.get("*", (req, resp) => {

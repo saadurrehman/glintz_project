@@ -21,7 +21,6 @@ const ProfileModal = ({ user, handleClose, updateRecord }) => {
             profilePicture: user.profilePicture || null,
         }} enableReinitialize onSubmit={() => { }}>
         {({ setFieldValue, dirty, values, resetForm }) => {
-            console.log(values);
             return (<>
               <react_bootstrap_1.Modal.Header>
                 <react_bootstrap_1.Modal.Title>Update Record</react_bootstrap_1.Modal.Title>

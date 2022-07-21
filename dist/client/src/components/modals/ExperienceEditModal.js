@@ -69,7 +69,7 @@ const ExperienceEditModal = ({ updateRecord, experience, handleClose, }) => {
                 <react_bootstrap_1.Form.Label className="mt-3" htmlFor="inputPassword5">
                   End Date
                 </react_bootstrap_1.Form.Label>
-                <react_datepicker_1.default selected={values.endDate} onChange={(date) => setFieldValue("endDate", date)}/>
+                <react_datepicker_1.default disabled={values.isCurrentlyWorkingHere} selected={values.endDate} onChange={(date) => setFieldValue("endDate", date)}/>
                 {errors.endDate && <small>{`${errors.endDate}`}</small>}
               </form>
             </react_bootstrap_1.Modal.Body>

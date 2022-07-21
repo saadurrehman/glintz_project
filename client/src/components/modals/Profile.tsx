@@ -30,7 +30,6 @@ const ProfileModal = ({ user, handleClose, updateRecord }: Props) => {
         onSubmit={() => {}}
       >
         {({ setFieldValue, dirty, values, resetForm }) => {
-          console.log(values);
           return (
             <>
               <Modal.Header>
