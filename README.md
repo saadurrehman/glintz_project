@@ -8,7 +8,11 @@ We used React to build a simple job profile page for this project. React.js on t
 
 #### 2.`npm run dev`
 
-Runs the app in the development mode.
+Runs the app in the development mode with nodemon.
+
+#### 3.`npm start`
+
+Runs the app in the development
 
 ## Configure Front End
 
