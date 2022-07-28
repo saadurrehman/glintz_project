@@ -16,6 +16,7 @@ In the project directory, you can run:
 
 In the project directory, you can run:
 
+### `cd client` on root to go inside client folder.
 ### `npm install` on client folder.
 # To run the frontend on localhost
 
